@@ -16,6 +16,7 @@ public static class Builds
         buildPlayerOptions.options = BuildOptions.None;
         BuildReport report = BuildPipeline.BuildPlayer(buildPlayerOptions);
        
+        
         Debug.Log($"Done, result {report.summary.result}");
     }
 }
