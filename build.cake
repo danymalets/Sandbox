@@ -2,39 +2,36 @@
 
 var target = Argument("target", "Build-Windows");
 
-Task("Clean-Artifacts")
-    .Does(() =>
-{
-    CleanDirectory($"./Builds/Windows");
-});
+void Build(BuildTarget buildTarget, string methodName, string logFile){
 
-Task("Build-Windows")
-    .IsDependentOn("Clean-Artifacts")
-    .Does(() =>
-{
-    
-    Console.WriteLine("Hello World!");
-    UnityEditor(2022, 3, 
+    UnityEditor("C:/Program Files/Unity/Hub/Editor/6000.0.32f1/Editor/Unity.exe",
         new UnityEditorArguments{
-            ProjectPath = ".",
+            ProjectPath = "./Sandbox",
             BatchMode = true,
             Quit = true,
-            ExecuteMethod = "Builds.WindowsBuild",
-            BuildTarget = BuildTarget.Android,
-            LogFile = "./Logs/BuildLog.log",
+            ExecuteMethod = methodName,
+            BuildTarget = buildTarget,
+            LogFile = logFile,
         },
         new UnityEditorSettings
         {
             RealTimeLog = true,
         }
     );
+}
+
+Task("Build-Windows")
+    .Does(() =>
+{
+    Build(BuildTarget.Win64, "_Project.Sources.Builds.BuildWindows", "./Logs/BuildWindowsLog.log");
     
 });
 
-// todo: build directory as argument
-
-//////////////////////////////////////////////////////////////////////
-// EXECUTION
-//////////////////////////////////////////////////////////////////////
+Task("Build-Android")
+    .Does(() =>
+{
+    Build(BuildTarget.Android, "_Project.Sources.Builds.BuildAndroid", "./Logs/BuildAndroidLog.log");
+    
+});
 
 RunTarget(target);
