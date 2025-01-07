@@ -16,7 +16,7 @@ namespace _Project.Sources.Game.Systems.Client
             
         }
         
-        // [BurstCompile]
+        [BurstCompile]
         public void OnUpdate(ref SystemState state)
         {
             var entityCommandBuffer = new EntityCommandBuffer(Allocator.Temp);
@@ -24,8 +24,6 @@ namespace _Project.Sources.Game.Systems.Client
             foreach ((RefRO<NetworkId> networkId, Entity entity) in SystemAPI.Query<RefRO<NetworkId>>().WithNone<NetworkStreamInGame>().WithEntityAccess())
             {
                 entityCommandBuffer.AddComponent<NetworkStreamInGame>(entity);
-
-                Debug.Log($"set in game");
                 
                 var rpcEntity = entityCommandBuffer.CreateEntity();
                 entityCommandBuffer.AddComponent(rpcEntity, new GoInGameRequestRpc());

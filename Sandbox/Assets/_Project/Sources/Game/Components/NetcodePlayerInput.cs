@@ -6,5 +6,6 @@ namespace _Project.Sources.Game.Components
     public struct NetcodePlayerInput : IInputComponentData
     {
         public float2 MoveDirection;
+        public InputEvent ShootEvent;
     }
 }

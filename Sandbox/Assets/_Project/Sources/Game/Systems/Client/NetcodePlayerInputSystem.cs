@@ -6,6 +6,8 @@ using Unity.Entities;
 using Unity.Mathematics;
 using Unity.NetCode;
 using UnityEngine;
+using UnityEngine.InputSystem;
+using Random = UnityEngine.Random;
 
 namespace _Project.Sources.Game.Systems.Client
 {
@@ -19,12 +21,21 @@ namespace _Project.Sources.Game.Systems.Client
             state.RequireForUpdate<NetcodePlayerInput>();
         }
         
-        // [BurstCompile]
+        [BurstCompile]
         public void OnUpdate(ref SystemState state)
         {
-            foreach (RefRW<NetcodePlayerInput> netcodePlayerInput in SystemAPI.Query<RefRW<NetcodePlayerInput>>().WithAll<GhostOwnerIsLocal>())
+            foreach ((RefRW<NetcodePlayerInput> netcodePlayerInput, RefRW<MyValue> myValue) in SystemAPI.Query<RefRW<NetcodePlayerInput>, RefRW<MyValue>>().WithAll<GhostOwnerIsLocal>())
             {
                 netcodePlayerInput.ValueRW.MoveDirection = new float2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
+
+                if (Input.GetKeyDown(KeyCode.Space))
+                {
+                    netcodePlayerInput.ValueRW.ShootEvent.Set();
+                }
+                else
+                {
+                    netcodePlayerInput.ValueRW.ShootEvent = default;
+                }
             }
         }
         

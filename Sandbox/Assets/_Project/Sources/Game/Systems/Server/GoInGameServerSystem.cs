@@ -20,7 +20,7 @@ namespace _Project.Sources.Game.Systems.Server
             state.RequireForUpdate<NetworkId>();
         }
         
-        // [BurstCompile]
+        [BurstCompile]
         public void OnUpdate(ref SystemState state)
         {
             var entityCommandBuffer = new EntityCommandBuffer(Allocator.Temp);
@@ -31,8 +31,6 @@ namespace _Project.Sources.Game.Systems.Server
             {
                 entityCommandBuffer.AddComponent<NetworkStreamInGame>(entity);
 
-                Debug.Log($"set in game server");
-                
                 entityCommandBuffer.AddComponent<NetworkStreamInGame>(receiveRpcCommandRequest.ValueRO.SourceConnection);
                 entityCommandBuffer.DestroyEntity(entity);
 
@@ -54,6 +52,5 @@ namespace _Project.Sources.Game.Systems.Server
             
             entityCommandBuffer.Playback(state.EntityManager);
         }
-        
     }
 }

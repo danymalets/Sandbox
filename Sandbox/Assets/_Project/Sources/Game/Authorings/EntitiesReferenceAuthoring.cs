@@ -7,15 +7,17 @@ namespace _Project.Sources.Game.Authorings
     public class EntitiesReferenceAuthoring : MonoBehaviour
     {
         [SerializeField] private GameObject _playerPrefab;
+        [SerializeField] private GameObject _bulletPrefab;
         
-        public class PlayerAuthoringBaker : Baker<EntitiesReferenceAuthoring>
+        public class Baker : Baker<EntitiesReferenceAuthoring>
         {
             public override void Bake(EntitiesReferenceAuthoring authoring)
             {
                 var entity = GetEntity(TransformUsageFlags.Dynamic);
                 AddComponent(entity, new EntitiesReferences()
                 {
-                    PlayerPrefab = GetEntity(authoring._playerPrefab, TransformUsageFlags.Dynamic)
+                    PlayerPrefab = GetEntity(authoring._playerPrefab, TransformUsageFlags.Dynamic),
+                    BulletPrefab = GetEntity(authoring._bulletPrefab, TransformUsageFlags.Dynamic),
                 });
             }
         }

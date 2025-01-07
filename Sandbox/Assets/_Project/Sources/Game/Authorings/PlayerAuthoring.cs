@@ -6,7 +6,7 @@ namespace _Project.Sources.Game.Authorings
 {
     public class PlayerAuthoring : MonoBehaviour
     {
-        public class PlayerAuthoringBaker : Baker<PlayerAuthoring>
+        public class Baker : Baker<PlayerAuthoring>
         {
             public override void Bake(PlayerAuthoring authoring)
             {

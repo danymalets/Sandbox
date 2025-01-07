@@ -6,7 +6,7 @@ namespace _Project.Sources.Game.Authorings
 {
     public class NetcodePlayerInputAuthoring : MonoBehaviour
     {
-        public class PlayerAuthoringBaker : Baker<NetcodePlayerInputAuthoring>
+        public class Baker : Baker<NetcodePlayerInputAuthoring>
         {
             public override void Bake(NetcodePlayerInputAuthoring authoring)
             {
