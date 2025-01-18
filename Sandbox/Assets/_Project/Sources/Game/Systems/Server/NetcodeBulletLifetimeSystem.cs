@@ -25,8 +25,6 @@ namespace _Project.Sources.Game.Systems.Server
                          .WithAll<Simulate>().WithEntityAccess())
             {
                 bullet.ValueRW.Timer -= SystemAPI.Time.DeltaTime;
-    
-                Debug.Log($"time {bullet.ValueRW.Timer}");
                 
                 if (bullet.ValueRW.Timer <= 0)
                 {

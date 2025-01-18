@@ -19,14 +19,11 @@ namespace _Project.Sources.Game.Systems.Server
         {
             if (Input.GetKeyDown(KeyCode.Y))
             {
-                Debug.Log($"key");
-                
                 foreach ((RefRW<MyValue> myValue, Entity entity)
                      in SystemAPI.Query<RefRW<MyValue>>().WithEntityAccess())
                 {
                 
                     myValue.ValueRW.Value = Random.Range(100, 1000);
-                    Debug.Log($"set server {myValue.ValueRW.Value}");
                 }
             }
         }

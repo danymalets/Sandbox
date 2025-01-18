@@ -21,7 +21,6 @@ namespace _Project.Sources.Game.Systems
             foreach ((RefRO<MyValue> myValue, Entity entity)
                      in SystemAPI.Query<RefRO<MyValue>>().WithEntityAccess())
             {
-                UnityEngine.Debug.Log($"my val {myValue.ValueRO.Value} {entity.ToString()} {state.World.ToString()}");
             }
         }
     }

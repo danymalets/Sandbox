@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using Unity.Entities;
 using Unity.NetCode;
 using Unity.Networking.Transport;
@@ -10,12 +11,16 @@ namespace _Project.Sources.Ui
 {
     public class EntryView : MonoBehaviour
     {
+        private static ushort Port = 7979;
+        
         [SerializeField] private Button _startServerButton;
         [SerializeField] private Button _startClientButton;
         [SerializeField] private Button _startBothButton;
 
         private void Awake()
         {
+            World.DisposeAllWorlds();
+            
             _startServerButton.onClick.AddListener(OnStartServerButtonClicked);
             _startClientButton.onClick.AddListener(OnStartClientButtonClicked);
             _startBothButton.onClick.AddListener(OnStartBothButtonClicked);
@@ -23,97 +28,20 @@ namespace _Project.Sources.Ui
 
         private void OnStartServerButtonClicked()
         {
-            
+            NetcodeUtils.RunServer(Port);
         }
         
         private void OnStartClientButtonClicked()
         {
-            World clientWorld = ClientServerBootstrap.CreateClientWorld("ClientWorld");
-
-
-            foreach (var world in World.All)
-            {
-                Debug.Log($"world {world.Flags}");
-            }
-
-            foreach (var world in World.All)
-            {
-                if (world.Flags == WorldFlags.Game)
-                {
-                    world.Dispose();
-                    break;
-                }
-            }
-
-            if (World.DefaultGameObjectInjectionWorld == null)
-            {
-                World.DefaultGameObjectInjectionWorld = clientWorld;
-            }
-
-            SceneManager.LoadSceneAsync("GameScene", LoadSceneMode.Single);
-
-
-            ushort port = 7979;
-            string ip = "192.168.100.21";
-
-            //server
-
+            Debug.Log($"start entry");
             
-            //client
-            NetworkEndpoint networkEndpoint = NetworkEndpoint.Parse(ip, port);
-            var networkStreamDriver = clientWorld.EntityManager
-                .CreateEntityQuery(typeof(NetworkStreamDriver))
-                .GetSingletonRW<NetworkStreamDriver>();
-            networkStreamDriver.ValueRW.Connect(clientWorld.EntityManager, networkEndpoint);
+            NetcodeUtils.RunClient(NetworkEndpoint.Parse("20.33.78.226",9000));
         }
-        
+
         private void OnStartBothButtonClicked()
         {
-            World serverWorld = ClientServerBootstrap.CreateServerWorld("ServerWorld");
-            World clientWorld = ClientServerBootstrap.CreateClientWorld("ClientWorld");
-
-
-            foreach (var world in World.All)
-            {
-                Debug.Log($"world {world.Flags}");
-            }
-
-            foreach (var world in World.All)
-            {
-                if (world.Flags == WorldFlags.Game)
-                {
-                    world.Dispose();
-                    break;
-                }
-            }
-
-            if (World.DefaultGameObjectInjectionWorld == null)
-            {
-                World.DefaultGameObjectInjectionWorld = serverWorld;
-            }
-
-            SceneManager.LoadSceneAsync("GameScene", LoadSceneMode.Single);
-
-
-            ushort port = 7979;
-            string ip = "192.168.100.21";
-
-
-            
-            //server
-            var networkStreamDriver = serverWorld.EntityManager
-                .CreateEntityQuery(typeof(NetworkStreamDriver))
-                .GetSingletonRW<NetworkStreamDriver>();
-
-            networkStreamDriver.ValueRW.Listen(NetworkEndpoint.AnyIpv4.WithPort(port));
-
-            
-            //client
-            NetworkEndpoint networkEndpoint = NetworkEndpoint.Parse(ip, port);
-            networkStreamDriver = clientWorld.EntityManager
-                .CreateEntityQuery(typeof(NetworkStreamDriver))
-                .GetSingletonRW<NetworkStreamDriver>();
-            networkStreamDriver.ValueRW.Connect(clientWorld.EntityManager, networkEndpoint);
+            NetcodeUtils.RunServer(Port);
+            NetcodeUtils.RunClient(NetworkEndpoint.LoopbackIpv4.WithPort(Port));
         }
     }
 }

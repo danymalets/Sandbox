@@ -39,7 +39,6 @@ namespace _Project.Sources.Game.Systems.Predicted
                 {
                     if (netcodePlayerInput.ValueRO.ShootEvent.IsSet)
                     {
-                        Debug.Log($"shoot {state.World.ToString()}");
 
                         var bullet = entityCommandBuffer.Instantiate(entitiesReferences.BulletPrefab);
                         entityCommandBuffer.SetComponent(bullet,
