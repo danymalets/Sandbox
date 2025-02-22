@@ -11,19 +11,20 @@ namespace _Project.Sources
 {
     public static class Builds
     {
-        private static readonly string[] GameScenes = new string[]
-        {
+        private static readonly string[] GameScenes = {
             "Assets/_Project/Scenes/GameScene.unity",
         };
 
         private static readonly string[] ClientScenes = new[]
         {
             "Assets/_Project/Scenes/EntryScene.unity",
+            "Assets/_Project/Scenes/LobbyScene.unity",
         }.Concat(GameScenes).ToArray();
         
         private static readonly string[] ServerScenes = new[]
         {
             "Assets/_Project/Scenes/ServerEntryScene.unity",
+            "Assets/_Project/Scenes/ServerLobbyScene.unity",
         }.Concat(GameScenes).ToArray();
         
         private const string BuildsPath = "Builds/Auto/";
@@ -34,11 +35,11 @@ namespace _Project.Sources
         [MenuItem("Custom/Builds/Build Android", priority = 1002)]
         public static void BuildAndroid() => Build(BuildTarget.Android, ClientScenes, "Android", "Sandbox.apk");
 
-        [MenuItem("Custom/Builds/Build Linux Server", priority = 2001)]
-        public static void BuildLinuxServer() => Build(BuildTarget.StandaloneLinux64, ServerScenes,"LinuxServer", "SandboxServer.x86_64");
+        [MenuItem("Custom/Builds/Build UGS Linux Server", priority = 2001)]
+        public static void BuildUgsLinuxServer() => Build(BuildTarget.StandaloneLinux64, ServerScenes,"LinuxServer", "SandboxServer.x86_64");
 
-        [MenuItem("Custom/Builds/Build Windows Server", priority = 2002)]
-        public static void BuildWindowsServer() => Build(BuildTarget.StandaloneWindows, ServerScenes,"WindowsServer", "SandboxServer.exe");
+        // [MenuItem("Custom/Builds/Build Windows Server", priority = 2002)]
+        // public static void BuildWindowsServer() => Build(BuildTarget.StandaloneWindows, ServerScenes,"WindowsServer", "SandboxServer.exe");
         
         [MenuItem("Custom/Builds/Open Builds Folder", priority = 3001)]
         public static void OpenBuildsFolder() => EditorUtility.RevealInFinder(BuildsPath);
@@ -66,6 +67,9 @@ namespace _Project.Sources
             if (report.summary.result == BuildResult.Succeeded)
             {
                 Debug.Log($"Build Success.");
+#if UNITY_EDITOR
+                EditorUtility.RevealInFinder($"{buildDirectory}/");
+#endif
             }
             else
             {

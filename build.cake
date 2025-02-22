@@ -34,4 +34,11 @@ Task("Build-Android")
     
 });
 
+Task("Build-Ugs-Server-Linux")
+    .Does(() =>
+{
+    Build(BuildTarget.Linux64, "_Project.Sources.Builds.BuildAndroid", "./Logs/BuildAndroidLog.log");
+    
+});
+
 RunTarget(target);

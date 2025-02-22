@@ -3,11 +3,11 @@ using Unity.NetCode;
 using Unity.Networking.Transport;
 using UnityEngine.SceneManagement;
 
-namespace _Project.Sources
+namespace _Project.Sources.Services
 {
-    public static class NetcodeUtils
+    public class MatchService
     {
-        public static void RunServer(ushort port)
+        public void RunServer(ushort port)
         {
             World serverWorld = ClientServerBootstrap.CreateServerWorld("ServerWorld");
 
@@ -20,10 +20,9 @@ namespace _Project.Sources
                 .GetSingletonRW<NetworkStreamDriver>();
 
             networkStreamDriver.ValueRW.Listen(NetworkEndpoint.AnyIpv4.WithPort(port));
-
         }
         
-        public static void RunClient(NetworkEndpoint networkEndpoint)
+        public void RunClient(NetworkEndpoint networkEndpoint)
         {
             World clientWorld = ClientServerBootstrap.CreateClientWorld("ClientWorld");
 
@@ -35,6 +34,16 @@ namespace _Project.Sources
                 .CreateEntityQuery(typeof(NetworkStreamDriver))
                 .GetSingletonRW<NetworkStreamDriver>();
             networkStreamDriver.ValueRW.Connect(clientWorld.EntityManager, networkEndpoint);
+        }
+
+        public void ExitToClientLobby()
+        {
+            SceneManager.LoadSceneAsync("LobbyScene", LoadSceneMode.Single);
+        }
+        
+        public void ExitToServerLobby()
+        {
+            SceneManager.LoadSceneAsync("ServerLobbyScene", LoadSceneMode.Single);
         }
     }
 }
