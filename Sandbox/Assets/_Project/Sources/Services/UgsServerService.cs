@@ -1,4 +1,4 @@
-#if UNITY_STANDALONE
+#if UNITY_SERVER
 
 using System;
 using System.Threading.Tasks;

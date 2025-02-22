@@ -1,5 +1,4 @@
-#if UNITY_STANDALONE
-
+#if UNITY_SERVER
 
 using _Project.Sources.Services;
 using Unity.Services.Core;
