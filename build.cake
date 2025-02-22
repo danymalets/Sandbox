@@ -23,21 +23,21 @@ void Build(BuildTarget buildTarget, string methodName, string logFile){
 Task("Build-Windows")
     .Does(() =>
 {
-    Build(BuildTarget.Win64, "_Project.Sources.Builds.BuildWindows", "./Logs/BuildWindowsLog.log");
+    Build(BuildTarget.Win64, "_Project.Sources.Builds.BuildWindows", "./Logs/BuildWindows.log");
     
 });
 
 Task("Build-Android")
     .Does(() =>
 {
-    Build(BuildTarget.Android, "_Project.Sources.Builds.BuildAndroid", "./Logs/BuildAndroidLog.log");
+    Build(BuildTarget.Android, "_Project.Sources.Builds.BuildAndroid", "./Logs/BuildAndroid.log");
     
 });
 
 Task("Build-Ugs-Server-Linux")
     .Does(() =>
 {
-    Build(BuildTarget.Linux64, "_Project.Sources.Builds.BuildAndroid", "./Logs/BuildAndroidLog.log");
+    Build(BuildTarget.Linux64, "_Project.Sources.Builds.BuildUgsLinuxServer", "./Logs/BuildUgsLinuxServer.log");
     
 });
 
